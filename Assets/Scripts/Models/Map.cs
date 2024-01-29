@@ -50,6 +50,26 @@ public class mapInstance
     }
 
 
+    public void CreateTest(){
+        Debug.Log("Create Test");
+        FillTiles(Tile.TileType.Stone,15,15,45,45);
+
+        // Build Room A
+        for(int i = 15; i < 45; i++){
+            if( i != 30){
+                PlaceBuildObject("Wall",getTileAt(20,i,0));
+            }
+        }
+        // Build Room B
+        for(int i = 15; i < 45; i++){
+            if( i != 20){
+                PlaceBuildObject("Wall",getTileAt(30,i,0));
+            }
+        }
+
+    }
+
+
     public void Update(float deltaTime){
         foreach(Character c in characters){
             c.Update(deltaTime);
@@ -72,7 +92,10 @@ public class mapInstance
         stringBuildObjectDictionary = new Dictionary<string, BuildObject>();
 
         BuildObject wallPrototype = BuildObject.CreatePrototype(
-            "Wall",0,Tile.HoldStrength.Heavy,1,1,true
+            "Wall",Tile.HoldStrength.Heavy,
+            0, // movement cost
+            1,1, // size
+            true
         );
 
         stringBuildObjectDictionary.Add("Wall",wallPrototype);
@@ -130,18 +153,28 @@ public class mapInstance
             }
         }
     }
+    public void FillTiles(Tile.TileType tileType, int start_x, int start_y, int end_x, int end_y){
+
+        for(int x = start_x; x < end_x; x++){
+            for (int y = start_x ; y < end_y; y++){
+                for(int z=0; z < depth;z++){
+                        tiles[x,y,z].OriginType = tileType;
+                }
+            }
+        }
+    }
 
 
     public Tile getTileAt(int x, int y, int z){
-        if(x < 0 || x > Width){
+        if(x < 0 || x >= Width){
             return null;
         }
 
-        if(y < 0 || y > Width){
+        if(y < 0 || y >= Height){
             return null;
         }
 
-        if(z < 0 || z > Width){
+        if(z < 0 || z >= Depth){
             return null;
         }
 

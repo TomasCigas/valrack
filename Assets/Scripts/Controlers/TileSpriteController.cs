@@ -52,7 +52,8 @@ public class TileSpriteController : MonoBehaviour
         }
 
         // FIX: this should be called on Map controller when SpriteController is done
-        mapInstance.RandomizeTiles();
+        // mapInstance.RandomizeTiles();
+        mapInstance.FillTiles(Tile.TileType.Grass);
     }
 
     void DestroyAllUnseenTiles(){

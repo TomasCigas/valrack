@@ -36,6 +36,11 @@ public class MapController : MonoBehaviour
         Map.Update(Time.deltaTime);
     }
 
+    public void CreateTest(){
+        Map.CreateTest();
+        Path_TileGraph graph = new Path_TileGraph(Map);
+    }
+
 
     public Tile getTileAtMapPos(Vector3 pos){
         int x = Mathf.FloorToInt(pos.x);

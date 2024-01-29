@@ -27,8 +27,8 @@ public class CharacterSpriteController : MonoBehaviour
 
         Character c = mapInstance.CreateCharacter(
             mapInstance.getTileAt(
-            mapInstance.Width/2,
-            mapInstance.Height/2,
+            15,
+            40,
             0
             )
         );

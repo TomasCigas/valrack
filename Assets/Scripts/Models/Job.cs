@@ -22,6 +22,8 @@ public class Job
         this.jobTime = jobTime;
         callbackJobComplete += cbJobComplete;
         this.buildObjectType = buildObjectType;
+
+        this.jobTime = jobTime;
     }
 
     public void doWork(float workTime){

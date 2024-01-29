@@ -155,7 +155,9 @@ public class MouseController : MonoBehaviour
         // --Camera Control--
         if(Input.GetMouseButton(1) || Input.GetMouseButton(2)){
             Vector3 diff = lastFramePos - currFramePosition;
+
             Camera.main.transform.Translate(diff);
+
         }else if(Input.GetAxis("Mouse ScrollWheel") < 0f && Camera.main.orthographicSize < 25){ 
             Camera.main.orthographicSize++;
         }else if(Input.GetAxis("Mouse ScrollWheel") > 0f && Camera.main.orthographicSize > 2){ 
@@ -164,6 +166,16 @@ public class MouseController : MonoBehaviour
 
         lastFramePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePos.z = 0;
+    }
+
+    bool CheckCameraPosition(Vector3 diff){
+        if( diff.x < 0 && (Camera.main.transform.position.x < 0 ||Camera.main.transform.position.y < 0)){
+            return false;
+        }
+        if( diff.x > 0 && (Camera.main.transform.position.x > mapControllerInstance.Map.Width || Camera.main.transform.position.y > mapControllerInstance.Map.Height)){
+            return false;
+        }
+        return true;
     }
 
 }

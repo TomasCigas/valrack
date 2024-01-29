@@ -13,7 +13,7 @@ public class BuildObject
 
     string objectType;
 
-    float movementCost = 1f;
+    public float movementCost{get; protected set;}
 
     int width;
     int height;
@@ -31,13 +31,14 @@ public class BuildObject
 
     static public BuildObject CreatePrototype(
             string objectType,
-            float movementCost,
             Tile.HoldStrength holdStrength,
+            float movementCost = 1,
             int width = 1, int height = 1,
             bool linksToNeighbour = false
         ){
         BuildObject obj = new BuildObject();
         obj.objectType = objectType;
+        obj.movementCost = movementCost;
         obj.height = height;
         obj.width = width;
         obj.linksToNeighbour = linksToNeighbour;
@@ -60,6 +61,7 @@ public class BuildObject
 
         obj.originTile = originTile;
         obj.objectType = proto.objectType;
+        obj.movementCost = proto.movementCost;
         obj.height = proto.height;
         obj.width = proto.width;
         obj.linksToNeighbour = proto.linksToNeighbour;

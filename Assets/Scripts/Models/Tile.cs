@@ -16,6 +16,19 @@ public class Tile
 
     HoldStrength tileStrength = HoldStrength.Heavy;
 
+    public float movementCost{
+        get{
+            if(this.currentType == TileType.Empty){
+                return 0;
+            }
+            if(buildObject == null){
+                return 1;
+            }
+            
+            return 1 * buildObject.movementCost;
+        }
+    }
+
     TileType originType;
     TileType currentType = TileType.Empty;
     public Action<Tile> callBackTileTypeChanged;
@@ -131,6 +144,9 @@ public class Tile
 
     
     public bool isNeighbour(Tile tile,bool diagonals = false){
+        
+        // Can be optimized
+
         if( 
             (X == tile.X && (Y == tile.Y +1 || Y == tile.Y - 1 )) //up and down
             ||
@@ -150,6 +166,46 @@ public class Tile
         }
 
         return false;
+    }
+
+    public Tile[] getNeighbourTiles(bool diagonals = false){
+        Tile[] neighs;
+
+        if(diagonals == false){
+            neighs = new Tile[4]; // N E S W
+        }else{
+            neighs = new Tile[8]; // N E S W NE SE SW NW
+        }
+
+        Tile tmpNeighbor;
+        tmpNeighbor = map.getTileAt(X,Y+1,Z); // N
+        neighs[0] = tmpNeighbor;
+
+        tmpNeighbor = map.getTileAt(X+1,Y,Z); // E
+        neighs[1] = tmpNeighbor;
+
+        tmpNeighbor = map.getTileAt(X,Y-1,Z); // S
+        neighs[2] = tmpNeighbor;
+
+        tmpNeighbor = map.getTileAt(X-1,Y,Z); // W
+        neighs[3] = tmpNeighbor;
+
+        if(diagonals){
+            tmpNeighbor = map.getTileAt(X+1,Y+1,Z); // NE
+            neighs[4] = tmpNeighbor;
+
+            tmpNeighbor = map.getTileAt(X+1,Y-1,Z); // SE
+            neighs[5] = tmpNeighbor;
+
+            tmpNeighbor = map.getTileAt(X-1,Y-1,Z); // SW
+            neighs[6] = tmpNeighbor;
+
+            tmpNeighbor = map.getTileAt(X-1,Y+1,Z); // NW
+            neighs[7] = tmpNeighbor;
+        }
+
+        return neighs;
+
     }
 
 }

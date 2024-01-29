@@ -89,7 +89,6 @@ public class BuildObjectSpriteController : MonoBehaviour
 
         // North
         if(checkTileAt(x,y+1,obj)){
-            Debug.Log("Found an OBJ north");
             spriteName+="N";
         }
         // East

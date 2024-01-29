@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BuildObject
@@ -28,10 +29,12 @@ public class BuildObject
     public bool LinksToNeighbour { get => linksToNeighbour; protected set => linksToNeighbour = value; }
     public Tile.HoldStrength RequiredHoldStrength { get => requiredHoldStrength; protected set => requiredHoldStrength = value; }
 
-    static public BuildObject CreatePrototype(string objectType, float movementCost,
-        Tile.HoldStrength holdStrength,
-        int width = 1, int height = 1,
-        bool linksToNeighbour = false
+    static public BuildObject CreatePrototype(
+            string objectType,
+            float movementCost,
+            Tile.HoldStrength holdStrength,
+            int width = 1, int height = 1,
+            bool linksToNeighbour = false
         ){
         BuildObject obj = new BuildObject();
         obj.objectType = objectType;
@@ -48,7 +51,7 @@ public class BuildObject
     static public BuildObject PlaceInstance( BuildObject proto,Tile originTile){
 
         // Check if tile has enough strength
-        if( proto.funcPositionValidation(originTile,proto) ){
+        if( proto.funcPositionValidation(originTile,proto) == false ){
             Debug.LogError("Object "+proto.objectType+" cannot be placed on "+originTile.Type);
             return null;
         }

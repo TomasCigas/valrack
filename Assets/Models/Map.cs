@@ -12,7 +12,7 @@ public class mapInstance
     int height;
     int depth;
 
-    List<BuildObject> characters;
+    List<Character> characters;
 
     public JobQueue jobQueue;
 
@@ -44,19 +44,28 @@ public class mapInstance
 
         CreateBuildObjectPrototypes();
 
-        characters = new List<BuildObject>();
+        characters = new List<Character>();
 
 
     }
 
-    public void CreateCharacter(Tile tile){
+
+    public void Update(float deltaTime){
+        foreach(Character c in characters){
+            c.Update(deltaTime);
+        }
+    }
+
+    public Character CreateCharacter(Tile tile){
 
         //tiles[ width/2,height/2,0 ]
         Character c = new Character(tile);
+        characters.Add(c);
 
         if(callbackCharacterCreated != null){
             callbackCharacterCreated(c);
         }
+        return c;
     }
 
     void CreateBuildObjectPrototypes(){
@@ -141,6 +150,11 @@ public class mapInstance
 
     public bool buildObjectPlacementValidation(string buildObjectPrototype, Tile t){
         BuildObject buildObject = stringBuildObjectDictionary[buildObjectPrototype];
+
+        if(t.BuildObject != null){
+            return false;
+        }
+
         return buildObject.
             funcPositionValidation(
                 t,

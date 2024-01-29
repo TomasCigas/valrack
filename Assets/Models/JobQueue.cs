@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class JobQueue
@@ -16,12 +17,17 @@ public class JobQueue
     }
 
     public void Enqueue(Job j){
-        Debug.Log("Queued");
         jobQueue.Enqueue(j);
         if(callbackJobCreated != null){
-            Debug.Log("callback");
             callbackJobCreated(j);
         }
+    }
+
+    public Job DeQueue(){
+        if(jobQueue.Count == 0){
+            return null;
+        }
+        return jobQueue.Dequeue();
     }
 
     public void RegisterJobCreatedCallback(Action<Job> cb){

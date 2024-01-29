@@ -30,6 +30,12 @@ public class MapController : MonoBehaviour
 
     }
 
+    void Update(){
+
+        // ADD: Controls
+        Map.Update(Time.deltaTime);
+    }
+
 
     public Tile getTileAtMapPos(Vector3 pos){
         int x = Mathf.FloorToInt(pos.x);

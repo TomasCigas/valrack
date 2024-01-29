@@ -25,7 +25,7 @@ public class CharacterSpriteController : MonoBehaviour
 
         characterGameObjectDictionary = new Dictionary<Character, GameObject>();
 
-        mapInstance.CreateCharacter(
+        Character c = mapInstance.CreateCharacter(
             mapInstance.getTileAt(
             mapInstance.Width/2,
             mapInstance.Height/2,
@@ -55,16 +55,11 @@ public class CharacterSpriteController : MonoBehaviour
         // Create GameObj linked to data of buildObject
         GameObject character_GO = new GameObject();
 
-        Tile tile_data = character.CurrentTile;
-
         characterGameObjectDictionary.Add(character,character_GO);
 
-        character_GO.name = "Character_"+
-            tile_data.X+"_"+
-            tile_data.Y+"_"+
-            tile_data.Z+".";
+        character_GO.name = "Character";
 
-        character_GO.transform.position = new Vector3(tile_data.X,tile_data.Y,tile_data.Z);
+        character_GO.transform.position = new Vector3(character.X,character.Y,character.Z);
         character_GO.transform.SetParent(this.transform,true);
 
         // Add sprite renderer
@@ -72,10 +67,30 @@ public class CharacterSpriteController : MonoBehaviour
 
         obj_sr.sprite = characterSprites["dude_F"];
 
-        obj_sr.sortingLayerID = SortingLayer.NameToID("Character");
+        obj_sr.sortingLayerID = SortingLayer.NameToID("Characters");
 
         // Add callback
-        //character.RegisterOnChangedCallback(OnBuildObjectChanged);
+        character.RegisterCharacterChangeCallback(OnCharacterChanged);
+    }
+
+    void OnCharacterChanged(Character character){
+        if(!characterGameObjectDictionary.ContainsKey(character)){
+            Debug.LogError("Character is not in direcory");
+            return;
+        }
+
+        GameObject char_GO = characterGameObjectDictionary[character];
+
+        //Debug.Log("Character pos:"+character.X+","+character.Y+","+character.Z);
+        
+        char_GO.transform.position = (
+            new Vector3(
+                character.X,
+                character.Y,
+                character.Z
+            )
+        );
+
     }
 
 }

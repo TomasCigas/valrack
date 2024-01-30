@@ -50,5 +50,9 @@ public class MapController : MonoBehaviour
         return Map.getTileAt(x,y,z);
 
     }
+    public void OnTileTypeChange(Tile tile_data){
+        // TODO fix graph on this tile
+        Map.InvalidatePathGraph();
+    }
     
 }

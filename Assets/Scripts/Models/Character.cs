@@ -9,12 +9,12 @@ public class Character
 
     public float X{
         get{
-            return Mathf.Lerp(currentTile.X,destTile.X, movementPerc);
+            return Mathf.Lerp(currentTile.X,nextTile.X, movementPerc);
         }
     }
     public float Y{
         get{
-            return Mathf.Lerp(currentTile.Y,destTile.Y, movementPerc);
+            return Mathf.Lerp(currentTile.Y,nextTile.Y, movementPerc);
         }
     }
 
@@ -30,60 +30,117 @@ public class Character
 
     Job job;
 
-    float speed = 2f;
+    float speed = 3f;
+    float lastSpeed = 3f;
 
     Tile currentTile;
+    Tile nextTile; // Next tile in path finding 
+    Path_AStar path_AStar;
     Tile destTile; // No movement == currentile
     float movementPerc;
 
     public Character(Tile tile){
         currentTile = tile;
         destTile = tile;
+        nextTile = tile;
     }
 
-    public void Update(float deltaTime){
-        if(job == null){
+    public void Update(float deltaTime)
+    {
+        Update_job(deltaTime);
+
+        Update_movement(deltaTime);
+
+
+        if (callbackCharacterChanged != null)
+        {
+            callbackCharacterChanged(this);
+        }
+
+    }
+
+    public void AbandonJob(){
+        nextTile = destTile = currentTile;
+        currentTile.Map.jobQueue.Enqueue(job);
+        job = null;
+    }
+
+    void Update_movement(float deltaTime){
+        // No need to move
+        if(currentTile == destTile){
+            return;
+        }
+
+        if(nextTile == null || nextTile == currentTile){
+            // Get next tile from pathfinder
+            if(path_AStar == null || path_AStar.Length() == 0){
+                // Generate new path
+                path_AStar = new Path_AStar( MapController.Instance.Map,currentTile,destTile );
+                if(path_AStar.Length() == 0){
+                    Debug.Log("No path was found by character");
+                    // Cancel job?
+                    AbandonJob();
+                    path_AStar = null;
+                    return;
+                }
+            }
+
+            nextTile = path_AStar.GetNextTile();
+
+            if( nextTile == currentTile ){
+                Debug.Log("Starting to move");
+            }
+        }
+
+        float travelDist = Mathf.Sqrt(
+            Mathf.Pow(currentTile.X - nextTile.X, 2) +
+            Mathf.Pow(currentTile.Y - nextTile.Y, 2)
+        );
+
+        float distThisFrame = (speed - currentTile.movementCost) * deltaTime;
+
+        float percThisFrame = distThisFrame / travelDist;
+
+        movementPerc += percThisFrame;
+
+        if (movementPerc >= 1)
+        {
+            currentTile = nextTile;
+            movementPerc = 0;
+        }
+    }
+
+    void Update_job(float deltaTime)
+    {
+        if (job == null)
+        {
             // Take new job
             job = currentTile.Map.jobQueue.DeQueue();
-            if(job != null){
+            if (job != null)
+            {
                 job.RegisterJobCompleteCallback(OnJobEnded);
                 job.RegisterJobCancelCallback(OnJobEnded);
             }
         }
 
-        if(job != null){
+        if (job != null)
+        {
             // Move to new job
             destTile = job.jobTile;
         }
 
-        if(currentTile == destTile){
+        // Do work if we are on work
+
+        if (currentTile == destTile){
             // Do job
-            if(job != null){
+            if (job != null)
+            {
                 job.doWork(deltaTime);
             }
             return;
         }
-
-
-        float travelDist = Mathf.Sqrt(
-            Mathf.Pow(currentTile.X - destTile.X,2) + 
-            Mathf.Pow(currentTile.Y - destTile.Y,2)
-        );
-
-        float distThisFrame = speed * deltaTime;
-
-        float percThisFrame = distThisFrame/travelDist;
-
-        movementPerc += percThisFrame;
-
-        if(movementPerc >= 1){
-            currentTile = destTile;
-            movementPerc = 0;
-        }
-
-        if(callbackCharacterChanged != null){
-            callbackCharacterChanged(this);
-        }
+        
+        return;
 
     }
 

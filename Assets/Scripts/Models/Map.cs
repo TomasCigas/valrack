@@ -18,8 +18,11 @@ public class mapInstance
 
     Dictionary<string,BuildObject> stringBuildObjectDictionary;
 
+    Action<BuildObject> callbackTileChanged;
     Action<BuildObject> callbackBuildObjectCreated;
     Action<Character> callbackCharacterCreated;
+
+    public Path_TileGraph pathFindingGraph;
 
 
     public mapInstance(int height = 100, int width = 100, int depth = 1){
@@ -46,7 +49,11 @@ public class mapInstance
 
         characters = new List<Character>();
 
+    
+    }
 
+    void Start(){
+        CreateNewPathGraph();
     }
 
 
@@ -66,6 +73,8 @@ public class mapInstance
                 PlaceBuildObject("Wall",getTileAt(30,i,0));
             }
         }
+        //InvalidatePathGraph();
+        CreateNewPathGraph();
 
     }
 
@@ -118,12 +127,17 @@ public class mapInstance
             callbackBuildObjectCreated(obj);
         }
 
+        InvalidatePathGraph();
     }
-    /*
-    void InstantiateBuildObjectPrototype(){
 
+    public void CreateNewPathGraph(){
+        pathFindingGraph = new Path_TileGraph(this);
     }
-    */
+
+    public void InvalidatePathGraph(){
+        Debug.Log("Invalidating graph.");
+        pathFindingGraph = null;
+    }
 
     public int Width { get => width;}
     public int Height { get => height;}
@@ -181,6 +195,7 @@ public class mapInstance
         return tiles[x,y,z];
     }
 
+
     public bool buildObjectPlacementValidation(string buildObjectPrototype, Tile t){
         BuildObject buildObject = stringBuildObjectDictionary[buildObjectPrototype];
 
@@ -203,6 +218,14 @@ public class mapInstance
         return stringBuildObjectDictionary[objectType];
     }
 
+
+    public void RegisterTileChanged(Action<BuildObject> callback){
+        callbackTileChanged += callback;
+    }
+
+    public void UnRegisterTileChanged(Action<BuildObject> callback){
+        callbackTileChanged -= callback;
+    }
     public void RegisterBuildObjectCreated(Action<BuildObject> callback){
         callbackBuildObjectCreated += callback;
     }

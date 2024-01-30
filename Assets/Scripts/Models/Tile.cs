@@ -21,11 +21,17 @@ public class Tile
             if(this.currentType == TileType.Empty){
                 return 0;
             }
+            
+            float finalMovementCost = 1;
+            if(this.currentType == TileType.Grass){
+                finalMovementCost += 0.5f;
+            }
+
             if(buildObject == null){
-                return 1;
+                return finalMovementCost ;
             }
             
-            return 1 * buildObject.movementCost;
+            return finalMovementCost * buildObject.movementCost;
         }
     }
 

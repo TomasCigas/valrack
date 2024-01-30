@@ -46,6 +46,7 @@ public class TileSpriteController : MonoBehaviour
 
                     // Add callback
                     tile_data.RegisterTileTypeChangedCallback(OnTileTypeChange);
+                    tile_data.RegisterTileTypeChangedCallback(MapController.Instance.OnTileTypeChange);
                     
                 }
             }

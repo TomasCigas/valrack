@@ -19,6 +19,11 @@ public class JobSpriteController : MonoBehaviour
     }
 
     void OnJobCreated(Job j){
+        if(jobGameObjectDictionary.ContainsKey(j)){
+            //Debug.Log("Job is already created: probably requeued");
+            return;
+        }
+
         GameObject job_GO = new GameObject();
 
         Sprite sprite = buildObjectSpriteController.getSpriteForBuildObject(

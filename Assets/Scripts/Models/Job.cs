@@ -17,7 +17,7 @@ public class Job
     Action<Job> callbackJobComplete;
     Action<Job> callbackJobCanceled;
 
-    public Job (Tile tile,string buildObjectType,Action<Job> cbJobComplete ,float jobTime =1f){
+    public Job (Tile tile,string buildObjectType,Action<Job> cbJobComplete ,float jobTime = 0.1f){
         this.jobTile = tile;
         this.jobTime = jobTime;
         callbackJobComplete += cbJobComplete;

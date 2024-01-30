@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Path_TileGraph{
 
-    Dictionary<Tile, Path_Node<Tile>> nodes;
+    public Dictionary<Tile, Path_Node<Tile>> nodes;
     // Constructs graph above map
     public Path_TileGraph(mapInstance map){
-        Debug.Log("Path_TileGraph");
 
         nodes = new Dictionary<Tile, Path_Node<Tile>>();
         // Create node graph for the whole world
@@ -18,18 +17,16 @@ public class Path_TileGraph{
                 for(int z = 0; z < map.Depth; z++){
                     Tile tile = map.getTileAt(x,y,z);
                     // TODO: add stairs and such for Z axis
-                    if(tile.movementCost > 0){ // 0 movementCost is impassable
+                    //if(tile.movementCost > 0){ // 0 movementCost is impassable
                         Path_Node<Tile> n = new Path_Node<Tile>();
                         n.data = tile;
                         nodes.Add(tile,n);
-                    }
+                    //}
                 }
             }
         }
 
-        Debug.Log("NodeCount: "+nodes.Count);
         // Create edges for nodes
-        int edgeCount = 0;
         foreach(Tile tile in nodes.Keys){
 
             Path_Node<Tile> node = nodes[tile];
@@ -45,14 +42,11 @@ public class Path_TileGraph{
                     edge.cost = neighbours[i].movementCost;
                     edge.pathNode = nodes[ neighbours[i] ];
                     edges.Add(edge);
-                    edgeCount++;
                 }
             }
 
             node.edges = edges.ToArray();
-
         }
-        Debug.Log("EdgeCount: "+edgeCount);
     }
 
 }

@@ -6,7 +6,7 @@ public class Path_TileGraph{
 
     public Dictionary<Tile, Path_Node<Tile>> nodes;
     // Constructs graph above map
-    public Path_TileGraph(mapInstance map){
+    public Path_TileGraph(Map map){
 
         nodes = new Dictionary<Tile, Path_Node<Tile>>();
         // Create node graph for the whole world

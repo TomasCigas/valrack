@@ -31,12 +31,17 @@ public class BuildModeController : MonoBehaviour
         this.buildObjectType = buildObjectType;
     }
 
+    public void SetMode_DestroyObject(){
+        buildModeIsObject = true;
+        this.buildObjectType = "";
+    }
+
     public void SetMode_Floor(){
         tileMode = Tile.TileType.Floor;
         buildModeIsObject = false;
     }
 
-    public void SetMode_Delete(){
+    public void SetMode_DeFloor(){
         tileMode = Tile.TileType.Empty;
         buildModeIsObject = false;
     }
@@ -51,6 +56,12 @@ public class BuildModeController : MonoBehaviour
 
         if (buildModeIsObject)
         {
+            // Check if object is to be destroyed
+            if(buildObjectType == ""){
+                t.BuildObject = null;
+                return;
+            }
+
             // Create installed object
             //mapControllerInstance.Map.PlaceBuildObject(buildObjectType, t);
 

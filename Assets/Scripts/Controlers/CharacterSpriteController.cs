@@ -11,7 +11,7 @@ public class CharacterSpriteController : MonoBehaviour
     Dictionary<string,Sprite> characterSprites;
 
 
-    public mapInstance mapInstance{
+    public Map mapInstance{
         get => MapController.Instance.Map;
     }
 
@@ -25,6 +25,13 @@ public class CharacterSpriteController : MonoBehaviour
 
         characterGameObjectDictionary = new Dictionary<Character, GameObject>();
 
+        Character e = mapInstance.CreateCharacter(
+            mapInstance.getTileAt(
+            16,
+            40,
+            0
+            )
+        );
         Character c = mapInstance.CreateCharacter(
             mapInstance.getTileAt(
             15,

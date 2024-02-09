@@ -14,12 +14,12 @@ public class BuildObjectSpriteController : MonoBehaviour
 
     Dictionary<string,Sprite> buildObjectSprites;
 
-    public mapInstance mapInstance{
+    public Map mapInstance{
         get => MapController.Instance.Map;
     }
 
 
-    int currentZPosition{get => MouseController.currentZPosition;}
+    int currentZPosition{get => CameraController.currentZPosition;}
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +47,7 @@ public class BuildObjectSpriteController : MonoBehaviour
             Debug.Log(sprite.name);
         }
     }
-
+    
 
 
     public void OnBuildObjectCreated(BuildObject buildObject){

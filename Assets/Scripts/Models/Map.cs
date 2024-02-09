@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Experimental.AI;
 using System;
 
-public class mapInstance
+public class Map
 {
     Tile [,,] tiles;
     int width;
@@ -25,7 +25,7 @@ public class mapInstance
     public Path_TileGraph pathFindingGraph;
 
 
-    public mapInstance(int height = 100, int width = 100, int depth = 1){
+    public Map(int height = 100, int width = 100, int depth = 1){
         // TODO: expand JobQueue class
         jobQueue = new JobQueue();
 
@@ -111,6 +111,8 @@ public class mapInstance
         Debug.Log("Added Wall to BuildObjectDictionary.");
     }
     
+    
+
     public void PlaceBuildObject(string objectType, Tile t){
 
         if( !stringBuildObjectDictionary.ContainsKey(objectType) ){

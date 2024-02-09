@@ -14,12 +14,12 @@ public class TileSpriteController : MonoBehaviour
 
     Dictionary<Tile,GameObject> tileDictionary;
 
-    public mapInstance mapInstance{
+    public Map mapInstance{
         get => MapController.Instance.Map;
     }
 
 
-    int currentZPosition{get => MouseController.currentZPosition;}
+    int currentZPosition{get => CameraController.currentZPosition;}
 
     // Start is called before the first frame update
     void Start()

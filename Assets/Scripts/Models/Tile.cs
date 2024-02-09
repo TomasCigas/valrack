@@ -38,13 +38,14 @@ public class Tile
     TileType originType;
     TileType currentType = TileType.Empty;
     public Action<Tile> callBackTileTypeChanged;
+    public Action<Tile> callBackObjectDestroyed;
 
     ItemObject itemObject;
     BuildObject buildObject;
 
     private Job pendingJob;
 
-    mapInstance map;
+    Map map;
     
     int x;
     int y;
@@ -89,11 +90,11 @@ public class Tile
     public int Z { get => z;}
     public ItemObject ItemObject { get => itemObject; set => itemObject = value; }
     public BuildObject BuildObject { get => buildObject; set => buildObject = value; }
-    public mapInstance Map { get => map; protected set => map = value; }
+    public Map Map { get => map; protected set => map = value; }
     public HoldStrength TileStrength { get => tileStrength; set => tileStrength = value; }
     public Job PendingJob { get => pendingJob; set => pendingJob = value; }
 
-    public Tile(mapInstance map , int x, int y, int z){
+    public Tile(Map map , int x, int y, int z){
         this.map = map;
         this.x= x;
         this.y = y;
@@ -107,6 +108,7 @@ public class Tile
     public void UnRegisterTileTypeChangedCallback(Action<Tile> callback){
         this.callBackTileTypeChanged += callback;
     }
+
 
     public bool AssignBuildObject(BuildObject buildObject){
         if(buildObject == null){

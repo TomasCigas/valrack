@@ -8,16 +8,16 @@ public class MapController : MonoBehaviour
 {
 
     public static MapController Instance{get; protected set;}
-    public mapInstance Map{get;protected set;}
+    public Map Map{get;protected set;}
 
-    int currentZPosition{get => MouseController.currentZPosition;}
+    int currentZPosition{get => CameraController.currentZPosition;}
 
     // Start is called before the first frame update
     void OnEnable()
     {
         // Create empty map
         Instance = this;
-        this.Map = new mapInstance();
+        this.Map = new Map(100,100,2);
 
         // Center Camera
         Camera.main.transform.Translate(

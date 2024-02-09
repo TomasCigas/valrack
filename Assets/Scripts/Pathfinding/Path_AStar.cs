@@ -11,7 +11,7 @@ public class Path_AStar
     Queue<Tile> path;
 
 
-    public Path_AStar(mapInstance map, Tile tileStart, Tile tileEnd){
+    public Path_AStar(Map map, Tile tileStart, Tile tileEnd){
 
         if(map.pathFindingGraph == null){
             map.pathFindingGraph = new Path_TileGraph(map);
